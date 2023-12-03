@@ -14,6 +14,20 @@ object Utils {
     fun IntRange.contains(other: IntRange) = other.first in this && other.last in this
 }
 
+data class Point2D(val x: Int, val y: Int) {
+
+    fun getNeighbours(includingDiagonal: Boolean = false) = listOfNotNull(
+        copy(x = x - 1),
+        copy(x = x + 1),
+        copy(y = y - 1),
+        copy(y = y + 1),
+        if (includingDiagonal) Point2D(x = x - 1, y = y - 1) else null,
+        if (includingDiagonal) Point2D(x = x + 1, y = y - 1) else null,
+        if (includingDiagonal) Point2D(x = x - 1, y = y + 1) else null,
+        if (includingDiagonal) Point2D(x = x + 1, y = y + 1) else null,
+    )
+}
+
 object Dijkstra {
     fun <T> findShortestRoute(nodes: Collection<T>, start: T, end: T, neighbourGetter: (T) -> Collection<Pair<T, Int>>, initialWeight: Int = 0): List<T>? {
         val nodeMapping = mutableMapOf<T, ShortestPathNode<T>>()
