@@ -11,6 +11,7 @@ object Utils {
             .let { if (trimEnd) it.trimEnd() else it }
 
     fun IntRange.overlapsWith(other: IntRange) = (last >= other.first) && (other.last >= first)
+    fun LongRange.overlapsWith(other: LongRange) = (last >= other.first) && (other.last >= first)
     fun IntRange.contains(other: IntRange) = other.first in this && other.last in this
 }
 
