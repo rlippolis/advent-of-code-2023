@@ -1,6 +1,7 @@
 package com.riccardo.adventofcode
 
 import java.util.*
+import kotlin.math.max
 
 object Utils {
     fun readFile(day: Int, name: String, trimStart: Boolean = true, trimEnd: Boolean = true): String =
@@ -13,6 +14,15 @@ object Utils {
     fun IntRange.overlapsWith(other: IntRange) = (last >= other.first) && (other.last >= first)
     fun LongRange.overlapsWith(other: LongRange) = (last >= other.first) && (other.last >= first)
     fun IntRange.contains(other: IntRange) = other.first in this && other.last in this
+
+    fun <T> Sequence<T>.repeat() = generateSequence(this) { it }.flatten()
+
+    fun lcm(a: Long, b: Long): Long = max(a, b).let { minLcm ->
+        (minLcm..(a * b) step minLcm).first { lcm -> lcm % a == 0L && lcm % b == 0L }
+    }
+
+    fun Sequence<Long>.lcm() = reduce { a, b -> lcm(a, b) }
+    fun List<Long>.lcm() = asSequence().lcm()
 }
 
 data class Point2D(val x: Int, val y: Int) {
