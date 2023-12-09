@@ -25,6 +25,10 @@ object Utils {
     fun List<Long>.lcm() = asSequence().lcm()
 }
 
+fun <T> String.toTypedList(separator: String = " ", converter: (String) -> T) = split(separator).map(converter)
+fun String.toIntList(separator: String = " ") = toTypedList(separator, String::toInt)
+fun String.toLongList(separator: String = " ") = toTypedList(separator, String::toLong)
+
 data class Point2D(val x: Int, val y: Int) {
 
     fun getNeighbours(includingDiagonal: Boolean = false) = listOfNotNull(
