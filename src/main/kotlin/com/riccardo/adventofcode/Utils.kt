@@ -31,15 +31,24 @@ fun String.toLongList(separator: String = " ") = toTypedList(separator, String::
 
 data class Point2D(val x: Int, val y: Int) {
 
+    fun up() = copy(y = y - 1)
+    fun down() = copy(y = y + 1)
+    fun left() = copy(x = x - 1)
+    fun right() = copy(x = x + 1)
+    fun leftUp() = Point2D(x = x - 1, y = y - 1)
+    fun rightUp() = Point2D(x = x + 1, y = y - 1)
+    fun leftDown() = Point2D(x = x - 1, y = y + 1)
+    fun rightDown() = Point2D(x = x + 1, y = y + 1)
+
     fun getNeighbours(includingDiagonal: Boolean = false) = listOfNotNull(
-        copy(x = x - 1),
-        copy(x = x + 1),
-        copy(y = y - 1),
-        copy(y = y + 1),
-        if (includingDiagonal) Point2D(x = x - 1, y = y - 1) else null,
-        if (includingDiagonal) Point2D(x = x + 1, y = y - 1) else null,
-        if (includingDiagonal) Point2D(x = x - 1, y = y + 1) else null,
-        if (includingDiagonal) Point2D(x = x + 1, y = y + 1) else null,
+        left(),
+        right(),
+        up(),
+        down(),
+        if (includingDiagonal) leftUp() else null,
+        if (includingDiagonal) rightUp() else null,
+        if (includingDiagonal) leftDown() else null,
+        if (includingDiagonal) rightDown() else null,
     )
 }
 
