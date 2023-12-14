@@ -29,6 +29,14 @@ fun <T> String.toTypedList(separator: String = " ", converter: (String) -> T) = 
 fun String.toIntList(separator: String = " ") = toTypedList(separator, String::toInt)
 fun String.toLongList(separator: String = " ") = toTypedList(separator, String::toLong)
 
+fun <T> List<List<T>>.transpose(): List<List<T>> = List(first().size) { colIdx ->
+    List(size) { rowIdx ->
+        this[rowIdx][colIdx]
+    }
+}
+
+fun <T> List<List<T>>.mirror(): List<List<T>> = map { it.reversed() }
+
 data class Point2D(val x: Int, val y: Int) {
 
     fun up() = copy(y = y - 1)
