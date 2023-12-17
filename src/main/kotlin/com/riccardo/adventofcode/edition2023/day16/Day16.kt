@@ -1,5 +1,6 @@
 package com.riccardo.adventofcode.edition2023.day16
 
+import com.riccardo.adventofcode.Direction
 import com.riccardo.adventofcode.Point2D
 import java.util.*
 
@@ -38,17 +39,8 @@ fun fireBeam(grid: List<String>, startingPoint: Point2D, startingDirection: Dire
     return visited.sumOf { row -> row.sumOf { it.energyLevel() } }
 }
 
-fun Point2D.move(direction: Direction): Point2D = when (direction) {
-    Direction.Up    -> up()
-    Direction.Down  -> down()
-    Direction.Left  -> left()
-    Direction.Right -> right()
-}
-
 operator fun List<String>.contains(p: Point2D): Boolean = p.y in indices && p.x in get(p.y).indices
 fun EnumSet<Direction>.energyLevel(): Int = if (isEmpty()) 0 else 1
-
-enum class Direction { Up, Down, Left, Right }
 
 val beamTraversals = mapOf(
     Direction.Up to mapOf(

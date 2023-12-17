@@ -1,6 +1,7 @@
 package com.riccardo.adventofcode
 
 import java.util.*
+import kotlin.math.absoluteValue
 import kotlin.math.max
 
 object Utils {
@@ -48,6 +49,13 @@ data class Point2D(val x: Int, val y: Int) {
     fun leftDown() = Point2D(x = x - 1, y = y + 1)
     fun rightDown() = Point2D(x = x + 1, y = y + 1)
 
+    fun move(direction: Direction): Point2D = when (direction) {
+        Direction.Up    -> up()
+        Direction.Down  -> down()
+        Direction.Left  -> left()
+        Direction.Right -> right()
+    }
+
     fun getNeighbours(includingDiagonal: Boolean = false) = listOfNotNull(
         left(),
         right(),
@@ -58,13 +66,32 @@ data class Point2D(val x: Int, val y: Int) {
         if (includingDiagonal) leftDown() else null,
         if (includingDiagonal) rightDown() else null,
     )
+
+    fun manhattanDistance(other: Point2D): Int = (x - other.x).absoluteValue + (y - other.y).absoluteValue
+
+    override fun toString(): String = "[x=$x, y=$y]"
+
+    companion object {
+        val origin = Point2D(x = 0, y = 0)
+    }
+}
+
+enum class Direction {
+    Up, Down, Left, Right;
+
+    fun opposite(): Direction = when (this) {
+        Up -> Down
+        Down -> Up
+        Left -> Right
+        Right -> Left
+    }
 }
 
 object Dijkstra {
-    fun <T> findShortestRoute(nodes: Collection<T>, start: T, end: T, neighbourGetter: (T) -> Collection<Pair<T, Int>>, initialWeight: Int = 0): List<T>? {
+    fun <T> findShortestRoute(nodes: Collection<T>, start: T, end: T, neighbourGetter: (T) -> Collection<Pair<T, Int>>, initialWeight: (T) -> Int = { 0 }): List<T>? {
         val nodeMapping = mutableMapOf<T, ShortestPathNode<T>>()
         nodes.forEach { node ->
-            val pathNode = nodeMapping.getOrCreate(node, initialWeight)
+            val pathNode = nodeMapping.getOrCreate(node, initialWeight(node))
             neighbourGetter(node).forEach { (neighbour, weight) ->
                 val neighbourNode = nodeMapping.getOrCreate(neighbour, weight)
                 pathNode.addDestination(neighbourNode, neighbourNode.value)
