@@ -40,20 +40,20 @@ fun <T> List<List<T>>.mirror(): List<List<T>> = map { it.reversed() }
 
 data class Point2D(val x: Int, val y: Int) {
 
-    fun up() = copy(y = y - 1)
-    fun down() = copy(y = y + 1)
-    fun left() = copy(x = x - 1)
-    fun right() = copy(x = x + 1)
-    fun leftUp() = Point2D(x = x - 1, y = y - 1)
-    fun rightUp() = Point2D(x = x + 1, y = y - 1)
-    fun leftDown() = Point2D(x = x - 1, y = y + 1)
-    fun rightDown() = Point2D(x = x + 1, y = y + 1)
+    fun up(n: Int = 1) = copy(y = y - n)
+    fun down(n: Int = 1) = copy(y = y + n)
+    fun left(n: Int = 1) = copy(x = x - n)
+    fun right(n: Int = 1) = copy(x = x + n)
+    fun leftUp(n: Int = 1) = Point2D(x = x - n, y = y - n)
+    fun rightUp(n: Int = 1) = Point2D(x = x + n, y = y - n)
+    fun leftDown(n: Int = 1) = Point2D(x = x - n, y = y + n)
+    fun rightDown(n: Int = 1) = Point2D(x = x + n, y = y + n)
 
-    fun move(direction: Direction): Point2D = when (direction) {
-        Direction.Up    -> up()
-        Direction.Down  -> down()
-        Direction.Left  -> left()
-        Direction.Right -> right()
+    fun move(direction: Direction, n: Int = 1): Point2D = when (direction) {
+        Direction.Up    -> up(n)
+        Direction.Down  -> down(n)
+        Direction.Left  -> left(n)
+        Direction.Right -> right(n)
     }
 
     fun getNeighbours(includingDiagonal: Boolean = false) = listOfNotNull(
